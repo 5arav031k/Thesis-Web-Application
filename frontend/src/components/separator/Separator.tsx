@@ -1,5 +1,5 @@
 export const Separator = () => (
-    <>
-        <div className="separator"></div>
-    </>
-)
+  <>
+    <div className="separator"></div>
+  </>
+);
