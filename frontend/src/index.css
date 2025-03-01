@@ -5,3 +5,17 @@ html, body, #root {
     display: flex;
     flex-direction: column;
 }
+
+:root {
+    --standart-font-family: "Roboto Flex", serif;
+    --normal-font-size: 14px;
+    --normal-font-weight: 400;
+    --semibold-font-weight: 600;
+    --bold-font-weight: 700;
+
+    --primary-text-color: #323130;
+    --primary-theme-color: #058192;
+    --primary-accent-color: #8E3CF7;
+
+    --secondary-text-color: #605E5C;
+}
