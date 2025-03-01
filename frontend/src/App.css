@@ -120,18 +120,40 @@
     color: #323130;
 }
 
-.react-aria-Cell, .react-aria-Column {
+.react-aria-Column {
     padding: 11px 8px;
+}
+
+.react-aria-Cell, .react-aria-Column {
     text-align: start;
     vertical-align: middle;
 }
 
 .react-aria-Cell:first-child, .react-aria-Column:first-child {
-    padding-left: 56px;
+    padding: 0;
+    width: 45px;
 }
 
 .react-aria-Cell:last-child, .react-aria-Column:last-child {
-    padding-right: 56px;
+    padding-right: 45px;
+}
+
+.branches-table-cell {
+    padding: 11px 8px;
+}
+
+.checkbox {
+    display: flex;
+    justify-content: center;
+}
+
+.checkbox svg {
+    opacity: 0;
+    transition: opacity 0.15s ease-in-out;
+}
+
+.checkbox svg.visible {
+    opacity: 1;
 }
 
 .header-container {
