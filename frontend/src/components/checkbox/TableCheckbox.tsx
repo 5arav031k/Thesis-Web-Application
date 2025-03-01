@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+import styles from './tableCheckbox.module.css';
 
 interface TableCheckboxProps {
   launchId: number;
@@ -26,7 +27,7 @@ export const TableCheckbox: React.FC<TableCheckboxProps> = ({
 
   return (
     <div
-      className="checkbox branches-table-cell"
+      className={`${styles.checkbox} ${styles.branchesTableCell}`}
       onMouseEnter={() => setHoveredLaunchRow(launchId)}
       onMouseLeave={() => setHoveredLaunchRow(null)}
     >
@@ -37,7 +38,7 @@ export const TableCheckbox: React.FC<TableCheckboxProps> = ({
         onMouseEnter={() => setHoveredSvgId(launchId)}
         onMouseLeave={() => setHoveredSvgId(null)}
         className={
-          hoveredLaunchRow === launchId || selectedLaunches.includes(launchId) ? 'visible' : ''
+          hoveredLaunchRow === launchId || selectedLaunches.includes(launchId) ? styles.visible : ''
         }
         style={{ cursor: 'pointer' }}
       >
