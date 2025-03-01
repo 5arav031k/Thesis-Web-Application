@@ -1,0 +1,42 @@
+.react-aria-Table {
+    border-collapse: collapse;
+    width: -webkit-fill-available;
+}
+
+.react-aria-Row, .react-aria-TableHeader {
+    border-bottom: 2px solid #EAEAEA;
+}
+
+.react-aria-Column {
+    font-family: "Roboto Flex", serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: #323130;
+}
+
+.react-aria-Cell {
+    font-family: "Roboto Flex", serif;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px;
+    color: #323130;
+}
+
+.react-aria-Column {
+    padding: 11px 8px;
+}
+
+.react-aria-Cell, .react-aria-Column {
+    text-align: start;
+    vertical-align: middle;
+}
+
+.react-aria-Cell:first-child, .react-aria-Column:first-child {
+    padding: 0;
+    width: 45px;
+}
+
+.react-aria-Cell:last-child, .react-aria-Column:last-child {
+    padding-right: 45px;
+}

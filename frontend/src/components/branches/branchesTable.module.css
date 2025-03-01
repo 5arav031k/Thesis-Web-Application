@@ -1,0 +1,9 @@
+.branchesContainer {
+    display: flex;
+    width: -webkit-fill-available;
+    padding: 16px 16px 0 16px;
+}
+
+.branchesTableCell {
+    padding: 11px 8px;
+}

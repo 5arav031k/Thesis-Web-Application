@@ -2,6 +2,8 @@ import { Cell, Column, Row, Table, TableHeader, TableBody } from 'react-aria-com
 import * as React from 'react';
 import { useState } from 'react';
 import { TableCheckbox } from '../checkbox/TableCheckbox.tsx';
+import styles from './branchesTable.module.css';
+import './table.css';
 
 const data = [
   {
@@ -90,7 +92,7 @@ export const BranchesTable: React.FC<BranchesTableProps> = ({
   const [hoveredLaunchRow, setHoveredLaunchRow] = useState<number | null>(null);
 
   return (
-    <div className="branches-container">
+    <div className={styles.branchesContainer}>
       <Table aria-label="branches">
         <TableHeader>
           <Column></Column>
@@ -154,7 +156,7 @@ const HoverableCell: React.FC<{
     <div
       onMouseEnter={() => setHoveredLaunchRow(launchId)}
       onMouseLeave={() => setHoveredLaunchRow(null)}
-      className="branches-table-cell"
+      className={styles.branchesTableCell}
     >
       {value}
     </div>
