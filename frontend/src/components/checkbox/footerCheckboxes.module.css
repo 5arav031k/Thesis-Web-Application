@@ -1,0 +1,22 @@
+.checkboxChoice {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.checkbox {
+    font-family: var(--standart-font-family);
+    font-weight: var(--normal-font-weight);
+    font-size: var(--normal-font-size);
+    line-height: 20px;
+    color: var(--primary-text-color);
+
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.checkbox svg {
+    opacity: 1;
+    transition: opacity 0.15s ease-in-out;
+}
