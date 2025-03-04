@@ -15,6 +15,7 @@ html, body, #root {
 
     --primary-text-color: #323130;
     --primary-theme-color: #058192;
+    --primary-theme-color-hovered: #116B7E;
     --primary-accent-color: #8E3CF7;
 
     --secondary-text-color: #605E5C;

@@ -61,28 +61,6 @@
     color: #323130;
 }
 
-.action-button-container {
-    width: -webkit-fill-available;
-    display: flex;
-    flex-direction: row;
-    padding: 0 16px;
-    align-items: center;
-}
-
-.action-button {
-    width: fit-content;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 8px;
-    font-family: "Roboto Flex", serif;
-    font-size: 14px;
-    line-height: 20px;
-    color: #323130;
-}
-
 .separator {
     width: -webkit-fill-available;
     height: 1px;
