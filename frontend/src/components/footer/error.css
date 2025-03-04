@@ -1,0 +1,8 @@
+.react-aria-FieldError {
+    font-family: var(--standart-font-family);
+    font-weight: var(--normal-font-weight);
+    font-size: 12px;
+    line-height: 16px;
+    color: #d22d3d;
+    margin-top: 5px;
+}

@@ -1,0 +1,133 @@
+.panelFooter {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    background-color: white;
+    z-index: 110;
+    padding: 18px 0;
+    box-shadow:
+            0 4.8px 14.4px rgba(0, 0, 0, 0.18),
+            0 25.6px 57.6px rgba(0, 0, 0, 0.22);
+    width: 420px;
+    height: -webkit-fill-available;
+    min-height: fit-content;
+    transition: right 0.4s ease-in-out;
+}
+
+.panelFooter.closed {
+    right: -100%;
+}
+
+.panelFooter.opened {
+    right: 0;
+}
+
+.panelContent {
+    display: flex;
+    flex-direction: column;
+    padding: 0 24px;
+    height: -webkit-fill-available;
+    min-height: fit-content;
+
+}
+
+.panelTitle {
+    padding: 2px 0;
+    font-family: var(--standart-font-family);
+    font-weight: var(--semibold-font-weight);
+    font-size: 20px;
+    line-height: 28px;
+    color: var(--primary-text-color);
+}
+
+.swapContent {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 0;
+    gap: 16px;
+}
+
+.footerField {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border: none;
+    outline: none;
+    margin: 0;
+    background-color: white;
+}
+
+.footerLabel {
+    padding: 5px 0;
+    font-family: var(--standart-font-family);
+    font-weight: var(--semibold-font-weight);
+    font-size: var(--normal-font-size);
+    line-height: 20px;
+    color: var(--primary-text-color);
+    text-align: start;
+}
+
+.footerInput {
+    padding: 6px 8px;
+    border-radius: 2px;
+    border: 1px solid #8A8886;
+    font-family: var(--standart-font-family);
+    font-weight: var(--normal-font-weight);
+    font-size: var(--normal-font-size);
+    line-height: 20px;
+    color: var(--primary-text-color);
+}
+
+.footerCheckboxes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.actionButtons {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    padding: 16px 0;
+    gap: 16px;
+}
+
+.button {
+    padding: 6px 20px;
+    border-radius: 2px;
+    font-family: var(--standart-font-family);
+    font-weight: var(--semibold-font-weight);
+    font-size: var(--normal-font-size);
+    line-height: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.saveButton {
+    background-color: var(--primary-theme-color);
+    color: white;
+    border: none;
+    outline: none;
+}
+
+.saveButton:hover {
+    background-color: var(--primary-theme-color-hovered);
+}
+
+.cancelButton {
+    background-color: white;
+    outline: none;
+    border: 1px solid #8A8886;
+    color: var(--primary-text-color);
+}
+
+.cancelButton:hover {
+    background-color: #F4F4F4;
+}
