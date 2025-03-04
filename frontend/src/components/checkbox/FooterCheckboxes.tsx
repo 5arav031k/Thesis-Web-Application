@@ -10,18 +10,13 @@ export const FooterCheckboxes: React.FC<FooterCheckboxesProps> = ({ selected, se
   return (
     <div className={styles.checkboxChoice}>
       <div className={styles.checkbox}>
-        <svg width={22} height={21} style={{ cursor: 'pointer' }} onClick={() => setSelected(true)}>
+        <svg width={22} height={21} onClick={() => setSelected(true)}>
           <use href={`#${selected ? 'radio-button-selected' : 'radio-button-unselected'}`} />
         </svg>
         True
       </div>
       <div className={styles.checkbox}>
-        <svg
-          width={22}
-          height={21}
-          style={{ cursor: 'pointer' }}
-          onClick={() => setSelected(false)}
-        >
+        <svg width={22} height={21} onClick={() => setSelected(false)}>
           <use href={`#${selected ? 'radio-button-unselected' : 'radio-button-selected'}`} />
         </svg>
         False
