@@ -1,0 +1,55 @@
+.custom-select__control {
+    border-color: #8A8886 !important;
+    border-width: 1px !important;
+    font-family: "Roboto Flex", serif !important;
+    font-size: 14px !important;
+}
+
+.custom-select__control:hover {
+    border-color: #323130 !important;
+}
+
+.custom-select__control--is-focused {
+    border-color: #323130 !important;
+    box-shadow: none !important;
+}
+
+.custom-select__multi-value {
+    background-color: #f8f8f8 !important;
+    color: #323130 !important;
+    font-family: "Roboto Flex", serif !important;
+}
+
+.custom-select__option {
+    padding: 8px     !important;
+    font-family: "Roboto Flex", serif !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+    font-weight: 400 !important;
+    color: #323130 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.custom-select__menu-list {
+    max-height: 190px !important;
+    border: 1px solid #323130;
+    border-radius: 2px;
+}
+
+.custom-select__menu-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-select__menu-list::-webkit-scrollbar-thumb {
+    background-color: #8A8886;
+    border-radius: 5px;
+}
+
+.custom-select__multi-value__label {
+    font-family: "Roboto Flex", serif !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    color: #323130 !important;
+    padding: 5px 7px !important;
+}

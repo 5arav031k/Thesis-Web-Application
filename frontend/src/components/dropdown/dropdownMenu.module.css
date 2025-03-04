@@ -1,0 +1,19 @@
+.dropdownContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border: none;
+    outline: none;
+    margin: 0;
+    background-color: white;
+}
+
+.dropdownLabel {
+    padding: 5px 0;
+    font-family: var(--standart-font-family);
+    font-weight: var(--semibold-font-weight);
+    font-size: var(--normal-font-size);
+    line-height: 20px;
+    color: var(--primary-text-color);
+    text-align: start;
+}
