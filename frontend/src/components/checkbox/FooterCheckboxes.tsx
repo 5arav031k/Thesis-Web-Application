@@ -3,7 +3,7 @@ import styles from './footerCheckboxes.module.css';
 
 interface FooterCheckboxesProps {
   selected: boolean;
-  setSelected: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelected: (devMode: boolean) => void;
 }
 
 export const FooterCheckboxes: React.FC<FooterCheckboxesProps> = ({ selected, setSelected }) => {
