@@ -14,6 +14,20 @@
     box-shadow: none !important;
 }
 
+.custom-select__value-container {
+    max-height: 160px;
+    overflow-y: auto !important;
+}
+
+.custom-select__value-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-select__value-container::-webkit-scrollbar-thumb {
+    background-color: #8A8886;
+    border-radius: 5px;
+}
+
 .custom-select__multi-value {
     background-color: #f8f8f8 !important;
     color: #323130 !important;
