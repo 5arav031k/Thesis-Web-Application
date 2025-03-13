@@ -1,17 +1,11 @@
-.branchesTableCell {
-    padding: 11px 8px;
-}
-
-.checkbox {
-    display: flex;
-    justify-content: center;
-}
-
-.checkbox svg {
+.customCheckbox input {
+    display: none;
+    position: absolute;
     opacity: 0;
-    transition: opacity 0.15s ease-in-out;
 }
 
-.checkbox svg.visible {
-    opacity: 1;
+.customCheckbox {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
 }
