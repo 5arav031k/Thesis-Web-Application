@@ -2,17 +2,12 @@
     width: -webkit-fill-available;
     display: flex;
     flex-direction: row;
-    padding: 0 16px;
+    padding-left: 16px;
     align-items: center;
 }
 
 .actionButton {
     width: fit-content;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
     padding: 10px 8px;
 
     font-family: var(--standart-font-family);
@@ -25,6 +20,14 @@
     outline: none;
     border: none;
     transition: background-color 0.3s;
+}
+
+.actionButton span {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }
 
 .actionButton:hover {

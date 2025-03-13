@@ -4,10 +4,12 @@ import NewBranchIcon from '../../assets/new-branch.svg';
 import * as React from 'react';
 import { useState } from 'react';
 import { AddNewLaunchFooter } from '../footer/AddNewLaunchFooter.tsx';
-import { Button } from 'react-aria-components';
 import styles from './actionButtons.module.css';
+import { DefaultButton } from '@fluentui/react';
+import { ProfileOptionType } from '../../model/ProfileOptionType.ts';
+import { SelectableItem } from '../../model/SelectableItem.ts';
 
-const profiles = [
+const profiles: ProfileOptionType[] = [
   {
     value: 1,
     label: 'Profile1',
@@ -99,29 +101,29 @@ const profiles = [
 ];
 
 interface ActionButtonsProps {
-  selectedLaunches: number[];
+  selectedItems: SelectableItem[];
 }
 
-export const ActionButtons: React.FC<ActionButtonsProps> = ({ selectedLaunches }) => {
+export const ActionButtons: React.FC<ActionButtonsProps> = ({ selectedItems }) => {
   const [isNewLaunchFooterOpen, setNewLaunchFooterOpen] = useState<boolean>(false);
 
   return (
     <>
       <div className={styles.actionButtonContainer}>
-        <Button className={styles.actionButton} onPress={() => setNewLaunchFooterOpen(true)}>
+        <DefaultButton className={styles.actionButton} onClick={() => setNewLaunchFooterOpen(true)}>
           <img src={NewBranchIcon} alt="New Branch Logo" width={16} height={16} />
-          Add new branch
-        </Button>
-        {selectedLaunches.length != 0 ? (
+          Add new launch
+        </DefaultButton>
+        {selectedItems.length != 0 ? (
           <>
-            <div className="action-button">
+            <DefaultButton className={styles.actionButton}>
               <img src={RestartBranchesIcon} alt="Restart Logo" width={16} height={16} />
               Restart
-            </div>
-            <div className="action-button">
+            </DefaultButton>
+            <DefaultButton className={styles.actionButton}>
               <img src={DeleteBranchesIcon} alt="Delete Logo" width={16} height={16} />
               Delete
-            </div>
+            </DefaultButton>
           </>
         ) : null}
       </div>
