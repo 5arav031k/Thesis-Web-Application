@@ -1,0 +1,110 @@
+.messageBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 2px;
+    box-shadow:
+        0 4.8px 14.4px rgba(0, 0, 0, 0.18),
+        0 25.6px 57.6px rgba(0, 0, 0, 0.22);
+    z-index: 1001;
+    width: 560px;
+}
+
+.bluredBackground {
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.4);
+    z-index: 1000;
+}
+
+.messageContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.messageHeader {
+    padding: 18px 24px;
+    font-family: var(--standart-font-family);
+    font-size: 20px;
+    font-weight: var(--semibold-font-weight);
+    line-height: 28px;
+    color: #201F1E;
+    text-align: left;
+}
+
+.dialog {
+    padding: 0 24px;
+}
+
+.message textarea {
+    font-family: var(--standart-font-family);
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--primary-text-color);
+    padding: 8px 10px;
+}
+
+.actionButtons {
+    display: flex;
+    justify-content: end;
+    align-items: start;
+    padding-bottom: 24px;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    padding: 16px 24px 0 24px;
+    gap: 8px;
+}
+
+.button {
+    padding: 6px 20px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.saveButton {
+    background-color: var(--primary-theme-color);
+    border: 1px solid transparent;
+    outline: none;
+}
+
+.saveButton span {
+    color: white;
+    margin: 0;
+    font-family: var(--standart-font-family);
+    font-weight: var(--semibold-font-weight);
+    font-size: var(--normal-font-size);
+    line-height: 20px;
+}
+
+.saveButton:hover {
+    background-color: var(--primary-theme-color-hovered);
+}
+
+.cancelButton {
+    background-color: white;
+    outline: none;
+    border: 1px solid #8A8886;
+}
+
+.cancelButton:hover {
+    background-color: #F4F4F4;
+}
+
+.cancelButton span {
+    margin: 0;
+    color: var(--primary-text-color);
+    font-family: var(--standart-font-family);
+    font-weight: var(--semibold-font-weight);
+    font-size: var(--normal-font-size);
+    line-height: 20px;
+}
