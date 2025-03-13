@@ -1,0 +1,5 @@
+.separator {
+    width: -webkit-fill-available;
+    height: 1px;
+    background-color: #EAEAEA;
+}
