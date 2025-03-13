@@ -1,0 +1,48 @@
+.sidebarContainer {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    background-color: #F8F8F8;
+    padding-top: 8px;
+    flex-grow: 1;
+    min-height: fit-content;
+}
+
+.sidebarButtonContainer {
+    width: 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sidebarButton {
+    height: 54px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 4px;
+    gap: 2px;
+    font-family: "Roboto Flex", serif;
+    line-height: 12px;
+    font-weight: normal;
+    font-size: 10px;
+    justify-content: center;
+    align-items: center;
+    color: #605E5C;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.selected {
+    background-color: #eaeaea;
+}
+
+.sidebarButton:hover {
+    background-color: #eaeaea;
+}
+
+.icon {
+    width: 32px;
+    height: 32px;
+}
