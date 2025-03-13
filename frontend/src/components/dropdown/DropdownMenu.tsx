@@ -1,22 +1,20 @@
 import styles from './dropdownMenu.module.css';
-import { Label } from 'react-aria-components';
-import Select from 'react-select';
+import Select, { GroupBase, SelectInstance } from 'react-select';
 import * as React from 'react';
 import './dropdownElements.css';
+import { Label } from '@fluentui/react';
+import { ProfileOptionType } from '../../model/ProfileOptionType.ts';
 
 interface DropdownMenuProps {
   labelName: string;
-  items: { value: number; label: string }[];
+  items: ProfileOptionType[];
   setSelectedItems: React.Dispatch<React.SetStateAction<any[]>>;
-  ref: any;
 }
 
-export const DropdownMenu: React.FC<DropdownMenuProps> = ({
-  labelName,
-  items,
-  setSelectedItems,
-  ref,
-}) => {
+export const DropdownMenu = React.forwardRef<
+  SelectInstance<ProfileOptionType, boolean, GroupBase<ProfileOptionType>>,
+  DropdownMenuProps
+>(({ labelName, items, setSelectedItems }, ref) => {
   const handleChange = (selectedOptions: any) => {
     setSelectedItems(selectedOptions);
   };
@@ -43,4 +41,4 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
       />
     </div>
   );
-};
+});
