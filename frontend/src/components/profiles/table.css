@@ -1,0 +1,24 @@
+.profiles-wrapper .ms-DetailsHeader {
+    background-color: #F8F8F8;
+    border: none;
+    padding: 0;
+}
+
+.profiles-wrapper .ms-DetailsHeader-cell:hover {
+    background-color: #eaeaea;
+}
+
+.profiles-wrapper .ms-DetailsRow {
+    background-color: #F8F8F8;
+    border-top: 1px solid var(--primary-text-color);
+}
+
+.profiles-wrapper .ms-DetailsRow:hover {
+    background-color: #eaeaea;
+}
+
+.profiles-wrapper {
+    padding: 5px 10px;
+    background-color: #F8F8F8;
+    height: fit-content;
+}
