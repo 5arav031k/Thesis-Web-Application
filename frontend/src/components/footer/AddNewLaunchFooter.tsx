@@ -1,4 +1,3 @@
-import { Button, FieldError, Input, Label, TextField } from 'react-aria-components';
 import { FooterCheckboxes } from '../checkbox/FooterCheckboxes.tsx';
 import { useEffect, useRef, useState } from 'react';
 import { DropdownMenu } from '../dropdown/DropdownMenu.tsx';
@@ -7,9 +6,12 @@ import './error.css';
 import * as React from 'react';
 import { useCodelineParams } from '../../utils/useCodelineParamsUtils.ts';
 import { collectCodelineParamsToXML } from '../../utils/CodelineToXMLUtils.ts';
+import { DefaultButton, Label, PrimaryButton, TextField } from '@fluentui/react';
+import { ProfileOptionType } from '../../model/ProfileOptionType.ts';
+import { GeneratedMessage } from '../message/GeneratedMessage.tsx';
 
 interface AddNewLaunchFooterProps {
-  profiles: { value: number; label: string }[];
+  profiles: ProfileOptionType[];
   isOpen: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -25,7 +27,6 @@ export const AddNewLaunchFooter: React.FC<AddNewLaunchFooterProps> = ({
     setTestedVersion,
     setRuntimeVersion,
     setDevMode,
-    setFromJenkins,
     setProfiles,
     resetToDefaults,
   } = useCodelineParams();
@@ -35,7 +36,10 @@ export const AddNewLaunchFooter: React.FC<AddNewLaunchFooterProps> = ({
 
   const [isUserEdited, setIsUserEdited] = useState(false);
 
-  const handleReset = () => {
+  const [resultXML, setResultXML] = useState<string>('');
+  const [isResultOpened, setResultOpened] = useState<boolean>(false);
+
+  const handleClose = () => {
     resetToDefaults();
     setIsUserEdited(false);
     setOpen(false);
@@ -46,13 +50,17 @@ export const AddNewLaunchFooter: React.FC<AddNewLaunchFooterProps> = ({
     const updatedProfiles = selectedItems.map((item) => ({ name: item.label }));
     setProfiles(updatedProfiles);
 
-    //TODO: const paramsToXML =
-    collectCodelineParamsToXML({
-      ...params,
-      profiles: updatedProfiles,
-    });
+    setResultXML(
+      collectCodelineParamsToXML({
+        ...params,
+        profiles: updatedProfiles,
+      }),
+    );
+  };
 
-    handleReset();
+  const confirmXML = (resultXML: string) => {
+    console.log(resultXML);
+    handleClose();
   };
 
   useEffect(() => {
@@ -67,87 +75,95 @@ export const AddNewLaunchFooter: React.FC<AddNewLaunchFooterProps> = ({
   }, [params.codelineName, isUserEdited]);
 
   return (
-    <div className={`${styles.panelFooter} ${isOpen ? styles.opened : styles.closed}`}>
-      <div className={styles.panelContent}>
-        <div className={styles.panelTitle}>Add new launch</div>
-        <div className={styles.swapContent}>
-          <TextField aria-label="Name" type="text" className={styles.footerField} isRequired>
-            <Label className={styles.footerLabel}>Codeline name</Label>
-            <Input
-              className={styles.footerInput}
+    <>
+      <div className={`${styles.panelFooter} ${isOpen ? styles.opened : styles.closed}`}>
+        <div className={styles.panelContent}>
+          <div className={styles.panelTitle}>Add new launch</div>
+          <div className={styles.swapContent}>
+            <TextField
+              label="Codeline name"
+              required
+              className={styles.footerField}
               value={params.codelineName}
-              onChange={(e) => {
-                setCodelineName(e.target.value);
+              onChange={(_, newValue) => {
+                setCodelineName(newValue || '');
                 setIsUserEdited(false);
               }}
             />
-            <FieldError />
-          </TextField>
 
-          <TextField
-            aria-label="Tested version"
-            type="text"
-            className={styles.footerField}
-            isRequired
-          >
-            <Label className={styles.footerLabel}>Tested version</Label>
-            <Input
-              className={styles.footerInput}
+            <TextField
+              label="Tested version"
+              required
+              className={styles.footerField}
               value={params.testedVersion}
-              onChange={(e) => {
-                setTestedVersion(e.target.value);
+              onChange={(_, newValue) => {
+                setTestedVersion(newValue || '');
                 setIsUserEdited(true);
               }}
             />
-            <FieldError />
-          </TextField>
 
-          <TextField
-            aria-label="Runtime version"
-            type="text"
-            className={styles.footerField}
-            isRequired
-          >
-            <Label className={styles.footerLabel}>Runtime version</Label>
-            <Input
-              className={styles.footerInput}
+            <TextField
+              label="Runtime version"
+              required
+              className={styles.footerField}
               value={params.runtimeVersion}
-              onChange={(e) => setRuntimeVersion(e.target.value)}
+              onChange={(_, newValue) => setRuntimeVersion(newValue || '')}
             />
-            <FieldError />
-          </TextField>
 
-          <div className={styles.footerCheckboxes}>
-            <TextField aria-label="Development mode" className={styles.footerField}>
+            <div className={styles.footerField}>
               <Label className={styles.footerLabel}>Development mode</Label>
               <FooterCheckboxes selected={params.devMode} setSelected={setDevMode} />
-            </TextField>
+            </div>
 
-            <TextField aria-label="Build from Jenkins" className={styles.footerField}>
-              <Label className={styles.footerLabel}>Build from Jenkins</Label>
-              <FooterCheckboxes selected={params.fromJenkins} setSelected={setFromJenkins} />
-            </TextField>
+            <DropdownMenu
+              labelName={'Profiles'}
+              items={profiles}
+              setSelectedItems={setSelectedItems}
+              ref={selectRef}
+            />
           </div>
 
-          <DropdownMenu
-            labelName={'Profiles'}
-            items={profiles}
-            setSelectedItems={setSelectedItems}
-            ref={selectRef}
-          />
-        </div>
-
-        <div className={styles.actionButtons}>
-          <div className={styles.buttons}>
-            <Button className={`${styles.button} ${styles.saveButton}`} onPress={handleSave}>
-              Save
-            </Button>
-            <Button className={`${styles.button} ${styles.cancelButton}`} onPress={handleReset}>
-              Cancel
-            </Button>
+          <div className={styles.actionButtons}>
+            <div className={styles.buttonContainer}>
+              <div className={styles.buttons}>
+                <PrimaryButton
+                  className={`${styles.button} ${styles.saveButton}`}
+                  onClick={() => {
+                    handleSave();
+                    handleClose();
+                  }}
+                >
+                  Add
+                </PrimaryButton>
+                <DefaultButton
+                  className={`${styles.button} ${styles.cancelButton}`}
+                  onClick={handleClose}
+                >
+                  Cancel
+                </DefaultButton>
+              </div>
+              <div className={styles.showResult}>
+                <PrimaryButton
+                  className={`${styles.button} ${styles.saveButton}`}
+                  onClick={() => {
+                    handleSave();
+                    setResultOpened(true);
+                  }}
+                >
+                  Show generated XML
+                </PrimaryButton>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      {isResultOpened ? (
+        <GeneratedMessage
+          message={resultXML}
+          setOpen={setResultOpened}
+          confirmMessage={confirmXML}
+        />
+      ) : null}
+    </>
   );
 };

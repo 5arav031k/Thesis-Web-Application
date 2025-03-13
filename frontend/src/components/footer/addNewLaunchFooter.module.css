@@ -49,8 +49,6 @@
 }
 
 .footerField {
-    display: flex;
-    flex-direction: column;
     padding: 0;
     border: none;
     outline: none;
@@ -58,7 +56,7 @@
     background-color: white;
 }
 
-.footerLabel {
+.footerField label {
     padding: 5px 0;
     font-family: var(--standart-font-family);
     font-weight: var(--semibold-font-weight);
@@ -68,10 +66,7 @@
     text-align: start;
 }
 
-.footerInput {
-    padding: 6px 8px;
-    border-radius: 2px;
-    border: 1px solid #8A8886;
+.footerField input {
     font-family: var(--standart-font-family);
     font-weight: var(--normal-font-weight);
     font-size: var(--normal-font-size);
@@ -92,6 +87,13 @@
     justify-content: end;
 }
 
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
 .buttons {
     display: flex;
     flex-direction: row;
@@ -102,19 +104,23 @@
 .button {
     padding: 6px 20px;
     border-radius: 2px;
-    font-family: var(--standart-font-family);
-    font-weight: var(--semibold-font-weight);
-    font-size: var(--normal-font-size);
-    line-height: 20px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .saveButton {
     background-color: var(--primary-theme-color);
-    color: white;
-    border: none;
+    border: 1px solid transparent;
     outline: none;
+}
+
+.saveButton span {
+    color: white;
+    margin: 0;
+    font-family: var(--standart-font-family);
+    font-weight: var(--semibold-font-weight);
+    font-size: var(--normal-font-size);
+    line-height: 20px;
 }
 
 .saveButton:hover {
@@ -125,9 +131,24 @@
     background-color: white;
     outline: none;
     border: 1px solid #8A8886;
-    color: var(--primary-text-color);
 }
 
 .cancelButton:hover {
     background-color: #F4F4F4;
+}
+
+.cancelButton span {
+    margin: 0;
+    color: var(--primary-text-color);
+    font-family: var(--standart-font-family);
+    font-weight: var(--semibold-font-weight);
+    font-size: var(--normal-font-size);
+    line-height: 20px;
+}
+
+.showResult {
+    display: flex;
+    justify-content: end;
+    padding: 16px 0;
+    width: -webkit-fill-available;
 }
