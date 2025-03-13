@@ -1,164 +1,212 @@
-import { Cell, Column, Row, Table, TableHeader, TableBody } from 'react-aria-components';
-import * as React from 'react';
-import { useState } from 'react';
-import { TableCheckbox } from '../checkbox/TableCheckbox.tsx';
-import styles from './branchesTable.module.css';
 import './table.css';
+import {
+  DetailsList,
+  DetailsListLayoutMode,
+  DetailsRow,
+  IColumn,
+  IDetailsRowProps,
+  MarqueeSelection,
+  Selection,
+  SelectionMode,
+} from '@fluentui/react';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { SelectableItem, SelectableItemType } from '../../model/SelectableItem.ts';
+import { ProfilesTable } from '../profiles/ProfilesTable.tsx';
+import { TableCheckbox } from '../checkbox/TableCheckbox.tsx';
+import { getAllLaunches } from '../../utils/BranchesUtils.ts';
+import { Branch } from '../../model/Branch.ts';
 
-const data = [
+interface BranchesTableProps {
+  setSelectedItems: React.Dispatch<React.SetStateAction<SelectableItem[]>>;
+}
+
+type Launch = {
+  key: number;
+  launch: string;
+  startTime: string;
+  total: number;
+  failed: number;
+  duration: string | null;
+};
+
+const columns: IColumn[] = [
   {
-    id: 7098,
-    name: 'Some Branch Name: 7098',
-    startTime: '2025-02-17 20:00:00',
-    total: 50,
-    failed: 10,
-    duration: '6h 05m',
+    key: 'column1',
+    name: 'Launch',
+    fieldName: 'launch',
+    minWidth: 300,
+    data: 'string',
+    onRender: (item) => <span className="custom-cell">{item.launch}</span>,
+    onRenderHeader: () => <span className="custom-header-cell">Launch</span>,
   },
   {
-    id: 7198,
-    name: 'Some Branch Name: 7198',
-    startTime: '2025-02-17 20:00:00',
-    total: 50,
-    failed: 10,
-    duration: '6h 05m',
+    key: 'column2',
+    name: 'Start Time',
+    fieldName: 'startTime',
+    minWidth: 200,
+    data: 'string',
+    onRender: (item) => <span className="custom-cell">{item.startTime}</span>,
+    onRenderHeader: () => <span className="custom-header-cell">Start Time</span>,
   },
   {
-    id: 7298,
-    name: 'Some Branch Name: 7298',
-    startTime: '2025-02-17 20:00:00',
-    total: 50,
-    failed: 10,
-    duration: '6h 05m',
+    key: 'column3',
+    name: 'Total',
+    fieldName: 'total',
+    minWidth: 70,
+    data: 'number',
+    onRender: (item) => <span className="custom-cell">{item.total}</span>,
+    onRenderHeader: () => <span className="custom-header-cell">Total</span>,
   },
   {
-    id: 7398,
-    name: 'Some Branch Name: 7398',
-    startTime: '2025-02-17 20:00:00',
-    total: 50,
-    failed: 10,
-    duration: '6h 05m',
+    key: 'column4',
+    name: 'Failed',
+    fieldName: 'failed',
+    minWidth: 70,
+    data: 'number',
+    onRender: (item) => <span className="custom-cell">{item.failed}</span>,
+    onRenderHeader: () => <span className="custom-header-cell">Failed</span>,
   },
   {
-    id: 7498,
-    name: 'Some Branch Name: 7498',
-    startTime: '2025-02-17 20:00:00',
-    total: 50,
-    failed: 10,
-    duration: '6h 05m',
+    key: 'column5',
+    name: 'Duration',
+    fieldName: 'duration',
+    minWidth: 65,
+    data: 'string',
+    onRender: (item) => (
+      <span className="custom-cell">{item.duration || 'Still in progress...'}</span>
+    ),
+    onRenderHeader: () => <span className="custom-header-cell">Duration</span>,
   },
   {
-    id: 7598,
-    name: 'Some Branch Name: 7598',
-    startTime: '2025-02-17 20:00:00',
-    total: 50,
-    failed: 10,
-    duration: '6h 05m',
-  },
-  {
-    id: 7698,
-    name: 'Some Branch Name: 7698',
-    startTime: '2025-02-17 20:00:00',
-    total: 50,
-    failed: 10,
-    duration: '6h 05m',
-  },
-  {
-    id: 7798,
-    name: 'Some Branch Name: 7798',
-    startTime: '2025-02-17 20:00:00',
-    total: 50,
-    failed: 10,
-    duration: '6h 05m',
-  },
-  {
-    id: 7898,
-    name: 'Some Branch Name: 7898',
-    startTime: '2025-02-17 20:00:00',
-    total: 50,
-    failed: 10,
-    duration: '6h 05m',
+    key: 'column6',
+    name: '',
+    fieldName: 'state',
+    minWidth: 90,
+    data: 'string',
+    onRender: (item) => <span className="custom-cell">{item.state}</span>,
+    onRenderHeader: () => <span className="custom-header-cell"></span>,
   },
 ];
 
-interface BranchesTableProps {
-  selectedLaunches: number[];
-  setSelectedLaunches: React.Dispatch<React.SetStateAction<number[]>>;
-}
+const getConvertedLaunches = async (): Promise<Launch[]> => {
+  const launches: Branch[] = await getAllLaunches('live');
+  const convertedLaunches: Launch[] = [];
 
-export const BranchesTable: React.FC<BranchesTableProps> = ({
-  selectedLaunches,
-  setSelectedLaunches,
-}) => {
-  const [hoveredLaunchRow, setHoveredLaunchRow] = useState<number | null>(null);
+  for (let i = 0; i < launches.length; i++) {
+    convertedLaunches.push({
+      key: launches[i].id,
+      launch: launches[i].name,
+      startTime: launches[i].startTime,
+      total: launches[i].testsStatistic.totalAmount,
+      failed: launches[i].testsStatistic.failedAmount,
+      duration: launches[i].formattedDuration,
+    });
+  }
+
+  return convertedLaunches;
+};
+
+export const BranchesTable: React.FC<BranchesTableProps> = ({ setSelectedItems }) => {
+  const [items, setItems] = useState<Launch[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getConvertedLaunches();
+      setItems(data);
+    };
+
+    fetchData();
+  }, []);
+
+  const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+
+  const [selectedLaunches, setSelectedLaunches] = useState<SelectableItem[]>([]);
+  const [selectedProfiles, setSelectedProfiles] = useState<SelectableItem[]>([]);
+
+  useEffect(() => {
+    setSelectedItems([...selectedLaunches, ...selectedProfiles]);
+  }, [selectedLaunches, selectedProfiles]);
+
+  const [selection] = useState(
+    () =>
+      new Selection({
+        onSelectionChanged: () => {
+          setSelectedLaunches(
+            selection.getSelection().map(
+              (item) =>
+                ({
+                  index: item.key,
+                  itemType: SelectableItemType.LAUNCH,
+                }) as SelectableItem,
+            ),
+          );
+        },
+        getKey: (item) => `launch-${item.key}`,
+      }),
+  );
+
+  const toggleRow = (key: string) => {
+    setExpandedRows((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(key)) {
+        newSet.delete(key);
+      } else {
+        newSet.add(key);
+      }
+      return newSet;
+    });
+
+    selection.toggleKeySelected(`launch-${key}`);
+  };
+
+  const onRenderRow = (props?: IDetailsRowProps): ReactElement | null => {
+    if (!props) return null;
+    const isExpanded = expandedRows.has(props.item.key);
+
+    return (
+      <>
+        <DetailsRow
+          {...props}
+          styles={{ root: { cursor: 'pointer', border: isExpanded ? 'none' : '' } }}
+        />
+        <div
+          style={{
+            maxHeight: isExpanded ? '272px' : '0px',
+            opacity: isExpanded ? 1 : 0,
+            transition: 'max-height 0.3s ease-out, opacity 0.3s ease-out',
+            overflow: 'hidden',
+          }}
+        >
+          {isExpanded && (
+            <ProfilesTable
+              setSelectedProfiles={setSelectedProfiles}
+              parentRowKey={props.item.key}
+            />
+          )}
+        </div>
+      </>
+    );
+  };
 
   return (
-    <div className={styles.branchesContainer}>
-      <Table aria-label="branches">
-        <TableHeader>
-          <Column></Column>
-          <Column isRowHeader={true}>Branch</Column>
-          <Column>Start Time</Column>
-          <Column>Total</Column>
-          <Column>Failed</Column>
-          <Column>Duration</Column>
-        </TableHeader>
-        <TableBody>
-          {data.map((launch) => (
-            <Row key={launch.id}>
-              <Cell>
-                <TableCheckbox
-                  launchId={launch.id}
-                  selectedLaunches={selectedLaunches}
-                  setSelectedLaunches={setSelectedLaunches}
-                  hoveredLaunchRow={hoveredLaunchRow}
-                  setHoveredLaunchRow={setHoveredLaunchRow}
-                />
-              </Cell>
-              <HoverableCell
-                value={launch.name}
-                launchId={launch.id}
-                setHoveredLaunchRow={setHoveredLaunchRow}
-              />
-              <HoverableCell
-                value={launch.startTime}
-                launchId={launch.id}
-                setHoveredLaunchRow={setHoveredLaunchRow}
-              />
-              <HoverableCell
-                value={launch.total}
-                launchId={launch.id}
-                setHoveredLaunchRow={setHoveredLaunchRow}
-              />
-              <HoverableCell
-                value={launch.failed}
-                launchId={launch.id}
-                setHoveredLaunchRow={setHoveredLaunchRow}
-              />
-              <HoverableCell
-                value={launch.duration}
-                launchId={launch.id}
-                setHoveredLaunchRow={setHoveredLaunchRow}
-              />
-            </Row>
-          ))}
-        </TableBody>
-      </Table>
+    <div className="launches-container">
+      <MarqueeSelection selection={selection}>
+        <DetailsList
+          items={items}
+          columns={columns}
+          layoutMode={DetailsListLayoutMode.justified}
+          onRenderRow={onRenderRow}
+          selection={selection}
+          selectionMode={SelectionMode.multiple}
+          selectionPreservedOnEmptyClick={true}
+          ariaLabelForSelectionColumn="Toggle selection"
+          ariaLabelForSelectAllCheckbox="Toggle selection for all items"
+          checkButtonAriaLabel="select row"
+          setKey="multiple"
+          onItemInvoked={(item) => toggleRow(item.key)}
+          onRenderCheckbox={(props: any) => <TableCheckbox {...props} />}
+        />
+      </MarqueeSelection>
     </div>
   );
 };
-
-const HoverableCell: React.FC<{
-  value: string | number;
-  launchId: number;
-  setHoveredLaunchRow: React.Dispatch<React.SetStateAction<number | null>>;
-}> = ({ value, launchId, setHoveredLaunchRow }) => (
-  <Cell>
-    <div
-      onMouseEnter={() => setHoveredLaunchRow(launchId)}
-      onMouseLeave={() => setHoveredLaunchRow(null)}
-      className={styles.branchesTableCell}
-    >
-      {value}
-    </div>
-  </Cell>
-);
