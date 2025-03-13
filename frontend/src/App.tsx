@@ -1,13 +1,14 @@
 import './App.css';
 import { Sidebar } from './components/sidebar/Sidebar.tsx';
-import { ActionButtons } from './components/actionbuttons/ActionButtons.tsx';
 import { Separator } from './components/separator/Separator.tsx';
 import { BranchesTable } from './components/branches/BranchesTable.tsx';
 import { Header } from './components/header/Header.tsx';
+import { ActionButtons } from './components/actionbuttons/ActionButtons.tsx';
 import { useState } from 'react';
+import { SelectableItem } from './model/SelectableItem.ts';
 
 const App = () => {
-  const [selectedLaunches, setSelectedLaunches] = useState<number[]>([]);
+  const [selectedItems, setSelectedItems] = useState<SelectableItem[]>([]);
 
   return (
     <>
@@ -15,13 +16,10 @@ const App = () => {
       <div className="content-container">
         <Sidebar />
         <div className="content">
-          <div className="content-header">Branches</div>
-          <ActionButtons selectedLaunches={selectedLaunches} />
+          <div className="content-header">Launches</div>
+          <ActionButtons selectedItems={selectedItems} />
           <Separator />
-          <BranchesTable
-            selectedLaunches={selectedLaunches}
-            setSelectedLaunches={setSelectedLaunches}
-          />
+          <BranchesTable setSelectedItems={setSelectedItems} />
         </div>
       </div>
     </>
