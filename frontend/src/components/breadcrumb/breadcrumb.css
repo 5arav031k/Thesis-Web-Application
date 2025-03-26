@@ -1,0 +1,30 @@
+.ms-Breadcrumb {
+    margin: 0;
+    padding-left: 16px;
+    padding-top: 8px;
+}
+
+.ms-Breadcrumb-itemLink, .ms-Breadcrumb-item {
+    padding: 2px 8px;
+    font-family: var(--standart-font-family);
+    font-size: var(--normal-font-size);
+    line-height: 20px;
+}
+
+.ms-Breadcrumb-itemLink {
+    color: var(--secondary-text-color);
+}
+
+.ms-Breadcrumb-itemLink:hover {
+    background-color: #F4F4F4;
+    color: #201F1E;
+}
+
+.ms-Breadcrumb-itemLink:active {
+    background-color: #EAEAEA;
+    color: #201F1E;
+}
+
+.ms-Breadcrumb-item {
+    color: #c8c8c8 !important;
+}
