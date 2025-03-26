@@ -1,0 +1,16 @@
+.ms-Dropdown:focus::after {
+    border-color: var(--primary-theme-color);
+}
+
+.custom-search-box {
+    width: 230px;
+}
+
+.custom-search-box:focus-within::after {
+    border-color: var(--primary-theme-color);
+}
+
+.custom-search-box .ms-SearchBox-icon {
+    color: var(--primary-theme-color);
+}
+

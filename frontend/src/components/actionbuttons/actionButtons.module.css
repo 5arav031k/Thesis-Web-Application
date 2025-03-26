@@ -1,9 +1,18 @@
 .actionButtonContainer {
-    width: -webkit-fill-available;
     display: flex;
     flex-direction: row;
-    padding-left: 16px;
+    padding: 0 16px;
     align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    flex-shrink: 0;
+}
+
+.settingContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    gap: 15px;
 }
 
 .actionButton {
@@ -32,4 +41,14 @@
 
 .actionButton:hover {
     background-color: #EAEAEA;
+}
+
+.icon {
+    color: #058192;
+    width: 16px;
+}
+
+.title {
+    display: flex;
+    flex-direction: row;
 }
