@@ -1,0 +1,34 @@
+package com.thesis.yr.entity;
+
+import com.thesis.yr.model.Status;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.util.List;
+
+@Entity
+@Data
+@EqualsAndHashCode(exclude = "id")
+public class Branch {
+    @Id
+    private Integer id;
+
+    private String name;
+
+    @Column(name = "start_time")
+    private String startTime;
+
+    @Column(name = "total_tests")
+    private Integer totalTests;
+
+    @Column(name = "failed_tests")
+    private Integer failedTests;
+
+    private Status status;
+
+    private String duration;
+
+    @OneToMany(mappedBy = "branch", fetch = FetchType.LAZY)
+    private List<Profile> profiles;
+}
