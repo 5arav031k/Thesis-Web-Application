@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { CodelineParameters } from '../model/CodelineParameters.ts';
+import {CodelineParameters, ProfileName} from '../model/CodelineParameters.ts';
 import { BRANCH_DEFAULTS } from '../constants/Constants.ts';
-import { Profile } from '../model/Profile.ts';
 
 export const useCodelineParams = () => {
   const [params, setParams] = useState<CodelineParameters>({
@@ -34,7 +33,7 @@ export const useCodelineParams = () => {
     setParams((prev) => ({ ...prev, fromJenkins: newValue }));
   };
 
-  const setProfiles = (newProfiles: Profile[]) => {
+  const setProfiles = (newProfiles: ProfileName[]) => {
     setParams((prev) => ({ ...prev, profiles: newProfiles }));
   };
 

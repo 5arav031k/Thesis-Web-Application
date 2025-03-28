@@ -1,4 +1,6 @@
-import { Profile } from './Profile.ts';
+export interface ProfileName {
+  name: string;
+}
 
 export interface CodelineParameters {
   codelineName: string;
@@ -7,5 +9,5 @@ export interface CodelineParameters {
   devMode: boolean;
   fromJenkins: boolean;
   templateSelector: string;
-  profiles: Profile[];
+  profiles: ProfileName[];
 }
