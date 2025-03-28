@@ -1,0 +1,78 @@
+.table-container {
+    padding: 0 16px;
+    overflow-y: scroll;
+    flex-grow: 1;
+}
+
+.table-container .ms-DetailsHeader-cell:hover {
+    background-color: #f3f2f1;
+}
+
+.loading-table {
+    font-family: var(--standart-font-family);
+    color: #a19f9d;
+    font-size: 20px;
+    line-height: 28px;
+    padding: 16px 0;
+    text-align: center;
+}
+
+.custom-cell {
+    font-family: var(--standart-font-family);
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px;
+    color: var(--primary-text-color);
+}
+
+.custom-cell.green {
+    background-color: rgba(16, 124, 16, 0.08);
+    color: #004B1C;
+    padding: 4px 8px;
+}
+
+.custom-cell.red {
+    background-color: rgba(232, 17, 35, 0.08);
+    color: #A4142E;
+    padding: 4px 8px;
+}
+
+.custom-cell.yellow {
+    background-color: rgba(255, 185, 0, 0.08);
+    color: #D29200;
+    padding: 4px 8px;
+}
+
+.custom-header-cell, .custom-status-header-cell {
+    font-family: var(--standart-font-family);
+    font-size: 14px;
+    font-weight: var(--semibold-font-weight);
+    line-height: 20px;
+    color: var(--primary-text-color);
+}
+
+.custom-status-header-cell {
+    padding: 0 8px;
+}
+
+.table-item-link {
+    font-family: var(--standart-font-family);
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px;
+    color: var(--primary-text-color);
+    text-decoration: none;
+}
+
+.table-item-link:hover {
+    color: #134158;
+    text-decoration: underline;
+}
+
+.table-name-cell {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 14px;
+}
