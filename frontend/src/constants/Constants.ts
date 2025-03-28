@@ -6,3 +6,5 @@ export const BRANCH_DEFAULTS = {
   fromJenkins: true,
   templateSelector: 'NOSYNC',
 } as const;
+
+export const BASE_PATH = '/ta-service-frontend';
