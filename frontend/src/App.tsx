@@ -1,26 +1,24 @@
 import './App.css';
 import { Sidebar } from './components/sidebar/Sidebar.tsx';
-import { Separator } from './components/separator/Separator.tsx';
-import { BranchesTable } from './components/branches/BranchesTable.tsx';
 import { Header } from './components/header/Header.tsx';
-import { ActionButtons } from './components/actionbuttons/ActionButtons.tsx';
-import { useState } from 'react';
-import { SelectableItem } from './model/SelectableItem.ts';
+import LaunchesContent from './components/content/LaunchesContent.tsx';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import ProfilesContentWithParams from './components/hocs/ProfilesContentWithParams.tsx';
+import { initializeIcons } from '@fluentui/react';
 
 const App = () => {
-  const [selectedItems, setSelectedItems] = useState<SelectableItem[]>([]);
+  initializeIcons();
 
   return (
     <>
       <Header />
       <div className="content-container">
         <Sidebar />
-        <div className="content">
-          <div className="content-header">Launches</div>
-          <ActionButtons selectedItems={selectedItems} />
-          <Separator />
-          <BranchesTable setSelectedItems={setSelectedItems} />
-        </div>
+        <Routes>
+          <Route index element={<Navigate to="/launches" />} />
+          <Route path="/launches" element={<LaunchesContent />} />
+          <Route path="/launches/:id/profiles" element={<ProfilesContentWithParams />} />
+        </Routes>
       </div>
     </>
   );

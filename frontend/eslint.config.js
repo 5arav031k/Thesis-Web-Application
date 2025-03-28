@@ -19,7 +19,9 @@ export default [
             },
             globals: {
                 ...globals.node,
-            }
+                ...globals.browser,
+                localStorage: "readonly",
+            },
         },
         settings: {
             react: {
