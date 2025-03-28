@@ -9,7 +9,7 @@
         0 4.8px 14.4px rgba(0, 0, 0, 0.18),
         0 25.6px 57.6px rgba(0, 0, 0, 0.22);
     z-index: 1001;
-    width: 560px;
+    width: 600px;
 }
 
 .bluredBackground {
@@ -39,15 +39,11 @@
 }
 
 .dialog {
-    padding: 0 24px;
+    padding-right: 12px;
 }
 
-.message textarea {
-    font-family: var(--standart-font-family);
-    font-size: 14px;
-    line-height: 22px;
-    color: var(--primary-text-color);
-    padding: 8px 10px;
+.message {
+    height: 205px;
 }
 
 .actionButtons {

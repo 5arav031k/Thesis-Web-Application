@@ -1,6 +1,7 @@
-import { DefaultButton, PrimaryButton, TextField } from '@fluentui/react';
-import React, { useState } from 'react';
+import { DefaultButton, PrimaryButton } from '@fluentui/react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './generatedMessage.module.css';
+import * as monaco from 'monaco-editor';
 
 interface GeneratedMessageProps {
   message: string;
@@ -13,7 +14,30 @@ export const GeneratedMessage: React.FC<GeneratedMessageProps> = ({
   setOpen,
   confirmMessage,
 }) => {
-  const [newMessage, setNewMessage] = useState<string>(message);
+  const [newMessage, _] = useState<string>(message);
+
+  const editorRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (editorRef.current) {
+      const editor = monaco.editor.create(editorRef.current, {
+        value: message,
+        language: 'xml',
+        theme: 'vs',
+        automaticLayout: true,
+        readOnly: true,
+        minimap: {
+          enabled: false,
+        },
+        lineNumbers: 'on',
+        scrollBeyondLastLine: false,
+      });
+
+      return () => {
+        editor.dispose();
+      };
+    }
+  }, [message]);
 
   const handleSave = () => {
     handleClose();
@@ -30,16 +54,7 @@ export const GeneratedMessage: React.FC<GeneratedMessageProps> = ({
         <div className={styles.messageContainer}>
           <div className={styles.messageHeader}>Generated XML</div>
           <div className={styles.dialog}>
-            <TextField
-              ariaLabel="Without visible label"
-              multiline
-              autoAdjustHeight
-              resizable={false}
-              className={styles.message}
-              value={newMessage}
-              spellCheck={false}
-              onChange={(_, newValue) => setNewMessage(newValue || message)}
-            />
+            <div ref={editorRef} className={styles.message} />
           </div>
           <div className={styles.actionButtons}>
             <div className={styles.buttonContainer}>

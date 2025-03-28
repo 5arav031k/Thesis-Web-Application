@@ -12,34 +12,42 @@
 
 .sidebarButtonContainer {
     width: 72px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    padding: 4px 0;
+    background-color: #F8F8F8;
+    transition: background-color 0.15s;
 }
 
 .sidebarButton {
-    height: 54px;
     display: flex;
     flex-direction: column;
-    padding: 0 4px;
+    padding-right: 4px;
+    padding-left: 2px;
     gap: 2px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+}
+
+.sidebarButtonText {
     font-family: "Roboto Flex", serif;
     line-height: 12px;
     font-weight: normal;
     font-size: 10px;
-    justify-content: center;
-    align-items: center;
     color: #605E5C;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    padding: 2px 0;
 }
 
-.selected {
+.sidebarButtonContainer:hover, .sidebarButtonContainer.selected{
     background-color: #eaeaea;
-}
+    .sidebarButtonText {
+        color: #201F1E;
+        font-weight: var(--semibold-font-weight);
+    }
 
-.sidebarButton:hover {
-    background-color: #eaeaea;
+    .sidebarButton {
+        border-left: 3px solid #097687;
+    }
 }
 
 .icon {

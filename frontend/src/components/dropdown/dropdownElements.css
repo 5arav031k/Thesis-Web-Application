@@ -10,7 +10,7 @@
 }
 
 .custom-select__control--is-focused {
-    border-color: #323130 !important;
+    border-color: #058192 !important;
     box-shadow: none !important;
 }
 
@@ -43,11 +43,11 @@
     color: #323130 !important;
     display: flex !important;
     align-items: center !important;
+    cursor: pointer !important;
 }
 
 .custom-select__menu-list {
     max-height: 190px !important;
-    border: 1px solid #323130;
     border-radius: 2px;
 }
 

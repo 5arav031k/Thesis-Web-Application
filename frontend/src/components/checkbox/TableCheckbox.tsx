@@ -18,7 +18,7 @@ export const TableCheckbox = ({ ...props }) => {
               ? '#checkbox-checked'
               : isHovered
                 ? '#checkbox-hovered'
-                : '#checkbox-second-default'
+                : '#checkbox-default'
           }
         />
       </svg>

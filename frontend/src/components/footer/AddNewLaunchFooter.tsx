@@ -78,7 +78,7 @@ export const AddNewLaunchFooter: React.FC<AddNewLaunchFooterProps> = ({
     <>
       <div className={`${styles.panelFooter} ${isOpen ? styles.opened : styles.closed}`}>
         <div className={styles.panelContent}>
-          <div className={styles.panelTitle}>Add new launch</div>
+          <div className={styles.panelTitle}>Add new configuration</div>
           <div className={styles.swapContent}>
             <TextField
               label="Codeline name"
@@ -143,15 +143,15 @@ export const AddNewLaunchFooter: React.FC<AddNewLaunchFooterProps> = ({
                 </DefaultButton>
               </div>
               <div className={styles.showResult}>
-                <PrimaryButton
-                  className={`${styles.button} ${styles.saveButton}`}
+                <DefaultButton
+                  className={`${styles.button} ${styles.cancelButton}`}
                   onClick={() => {
                     handleSave();
                     setResultOpened(true);
                   }}
                 >
                   Show generated XML
-                </PrimaryButton>
+                </DefaultButton>
               </div>
             </div>
           </div>

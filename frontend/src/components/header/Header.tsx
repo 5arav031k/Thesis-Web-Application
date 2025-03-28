@@ -10,7 +10,7 @@ export const Header = () => (
         </div>
         <div className={styles.arisName}>
           <span className={styles.aris}>ARIS</span>
-          Ta Service
+          TA Service
         </div>
       </div>
     </div>
