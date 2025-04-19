@@ -1,36 +1,33 @@
 import { LaunchesActionButtons } from '../actionbuttons/LaunchesActionButtons.tsx';
 import { Separator } from '../separator/Separator.tsx';
 import LaunchesTable from '../table/LaunchesTable.tsx';
-import { SelectableItem } from '../../model/SelectableItem.ts';
+import { SelectableLaunchItem } from '../../model/SelectableItem.ts';
 import { Launch } from '../../model/Branch.ts';
 import { Component } from 'react';
 import { convertToLaunches, getAllLaunches } from '../../utils/LaunchesUtils.ts';
 import BreadcrumbNav from '../breadcrumb/BreadCrumbNav.tsx';
-import { getAllProfileNames } from '../../utils/ProfilesUtils.ts';
+import { LaunchesFilterState, useLaunchesFilterStore } from '../../store/launchesFilterStore.ts';
 
 interface LaunchesContentState {
-  selectedItems: SelectableItem[];
+  selectedLaunches: SelectableLaunchItem[];
   launches: Launch[];
   filteredLaunches: Launch[];
   isLaunchesRetrieved: boolean;
-  allProfileNames: string[];
 }
 
 class LaunchesContent extends Component<{}, LaunchesContentState> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      selectedItems: [],
+      selectedLaunches: [],
       launches: [],
       filteredLaunches: [],
       isLaunchesRetrieved: false,
-      allProfileNames: [],
     };
   }
 
   componentDidMount() {
     this.fetchBranches();
-    this.fetchProfileNames();
   }
 
   fetchBranches = async () => {
@@ -43,24 +40,25 @@ class LaunchesContent extends Component<{}, LaunchesContentState> {
     try {
       const branches = await getAllLaunches(Number(storedTimeScope));
       const launches = convertToLaunches(branches);
-      this.setState({ launches: launches, filteredLaunches: launches, isLaunchesRetrieved: true });
+
+      const { filterState } = useLaunchesFilterStore.getState();
+
+      this.setState({
+        launches: launches,
+        filteredLaunches: this.filterSpecificLaunches(filterState, launches),
+        isLaunchesRetrieved: true,
+      });
     } catch (error) {
       console.error('Error fetching branches:', error);
     }
   };
 
-  fetchProfileNames = async () => {
-    try {
-      const profiles = await getAllProfileNames();
-      console.log(profiles);
-      this.setState({ allProfileNames: profiles });
-    } catch (error) {
-      console.error('Error fetching branches:', error);
-    }
+  setSelectedLaunches = (items: SelectableLaunchItem[]) => {
+    this.setState({ selectedLaunches: items });
   };
 
-  setSelectedItems = (items: SelectableItem[]) => {
-    this.setState({ selectedItems: items });
+  unselectAllLaunches = () => {
+    this.setSelectedLaunches([]);
   };
 
   changeTimeScope = () => {
@@ -70,7 +68,8 @@ class LaunchesContent extends Component<{}, LaunchesContentState> {
 
   searchLaunches = (newValue?: string) => {
     if (!newValue) {
-      this.setState({ filteredLaunches: this.state.launches });
+      const { filterState } = useLaunchesFilterStore.getState();
+      this.filterLaunches(filterState);
       return;
     }
 
@@ -82,7 +81,34 @@ class LaunchesContent extends Component<{}, LaunchesContentState> {
   };
 
   clearSearch = () => {
-    this.setState({ filteredLaunches: this.state.launches });
+    const { filterState } = useLaunchesFilterStore.getState();
+    this.filterLaunches(filterState);
+  };
+
+  filterLaunches = (filteredItems: LaunchesFilterState) => {
+    let filtered = this.state.launches;
+
+    if (filteredItems.statuses.length > 0) {
+      filtered = filtered.filter((launch) => filteredItems.statuses.includes(launch.status));
+    }
+
+    if (filteredItems.retry) {
+      filtered = filtered.filter((launch) => launch.isRetry);
+    }
+
+    this.setState({ filteredLaunches: filtered });
+  };
+
+  filterSpecificLaunches = (filteredItems: LaunchesFilterState, launches: Launch[]): Launch[] => {
+    if (filteredItems.statuses.length > 0) {
+      launches = launches.filter((launch) => filteredItems.statuses.includes(launch.status));
+    }
+
+    if (filteredItems.retry) {
+      launches = launches.filter((launch) => launch.isRetry);
+    }
+
+    return launches;
   };
 
   render() {
@@ -93,16 +119,18 @@ class LaunchesContent extends Component<{}, LaunchesContentState> {
           <div className="content-header-name">Launches</div>
         </div>
         <LaunchesActionButtons
-          selectedItems={this.state.selectedItems}
+          selectedLaunches={this.state.selectedLaunches}
+          unselectAllLaunches={this.unselectAllLaunches}
           changeTimeScope={this.changeTimeScope}
           searchLaunches={this.searchLaunches}
           clearSearch={this.clearSearch}
-          allProfileNames={this.state.allProfileNames}
+          filterLaunches={this.filterLaunches}
         />
         <Separator />
         <LaunchesTable
           launches={this.state.filteredLaunches}
-          setSelectedItems={this.setSelectedItems}
+          setSelectedLaunches={this.setSelectedLaunches}
+          selectedLaunches={this.state.selectedLaunches}
           launchesRetrieved={this.state.isLaunchesRetrieved}
         />
       </div>
