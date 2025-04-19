@@ -3,7 +3,7 @@
 }
 
 .custom-search-box {
-    width: 230px;
+    width: 215px;
 }
 
 .custom-search-box:focus-within::after {
@@ -14,3 +14,25 @@
     color: var(--primary-theme-color);
 }
 
+.custom-icon-button {
+    height: 40px;
+    transition: background-color 0.3s;
+    padding: 0 5px;
+}
+
+.custom-icon-button .ms-Button-icon {
+    color: var(--primary-theme-color);
+}
+
+.custom-checkbox .ms-Checkbox-checkbox {
+    border-color: #058192 !important;
+    background-color: transparent;
+}
+
+.custom-checkbox.is-checked .ms-Checkbox-checkbox {
+    background-color: #058192 !important;
+}
+
+.custom-checkbox.is-checked:hover .ms-Checkbox-checkbox {
+    background-color: var(--primary-theme-color-hovered) !important;
+}

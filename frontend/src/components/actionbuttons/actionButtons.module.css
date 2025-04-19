@@ -12,6 +12,7 @@
     display: flex;
     flex-direction: row;
     justify-content: end;
+    align-items: center;
     gap: 15px;
 }
 
@@ -51,4 +52,18 @@
 .title {
     display: flex;
     flex-direction: row;
+}
+
+.checkedFilterCount {
+    border-radius: 8px;
+    background-color: var(--primary-theme-color);
+    padding-inline: 6px;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 18px;
+    margin-left: 4px;
+
+    font-family: var(--standart-font-family);
+    font-size: 12px;
 }

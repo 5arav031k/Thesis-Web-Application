@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { AddNewLaunchFooter } from '../footer/AddNewLaunchFooter.tsx';
 import styles from './actionButtons.module.css';
 import {
@@ -11,15 +11,34 @@ import {
   SearchBox,
 } from '@fluentui/react';
 import { ProfileOptionType } from '../../model/ProfileOptionType.ts';
-import { SelectableItem } from '../../model/SelectableItem.ts';
+import { SelectableLaunchItem } from '../../model/SelectableItem.ts';
+import jsonProfiles from '../../profiles.json';
 import CustomIcon from '../icon/Icon.tsx';
 import './actions.css';
+import { LaunchesFilterButton } from './LaunchesFilterButton.tsx';
+import { LaunchesFilterState, useLaunchesFilterStore } from '../../store/launchesFilterStore.ts';
+import { GeneratedMessage } from '../message/GeneratedMessage.tsx';
+import { restartItem } from '../../utils/LaunchesUtils.ts';
+
+const profiles: ProfileOptionType[] = jsonProfiles.map((profile: string, index: number) => ({
+  value: index + 1,
+  label: profile,
+}));
+
+interface ActionButtonsProps {
+  selectedLaunches: SelectableLaunchItem[];
+  unselectAllLaunches: () => void;
+  changeTimeScope: () => void;
+  searchLaunches: (newValue?: string) => void;
+  clearSearch: () => void;
+  filterLaunches: (filteredItems: LaunchesFilterState) => void;
+}
 
 const dropdownStyles: Partial<IDropdownStyles> = {
-  dropdown: { width: 230 },
+  dropdown: { width: 215 },
 };
 
-const options: IDropdownOption[] = [
+const timeRangeOptions: IDropdownOption[] = [
   {
     key: 12,
     text: 'Last 12 hours',
@@ -38,37 +57,32 @@ const options: IDropdownOption[] = [
   },
 ];
 
-interface ActionButtonsProps {
-  selectedItems: SelectableItem[];
-  changeTimeScope: () => void;
-  searchLaunches: (newValue?: string) => void;
-  clearSearch: () => void;
-  allProfileNames: string[];
+enum MessageType {
+  RESTART,
 }
 
 export const LaunchesActionButtons: React.FC<ActionButtonsProps> = ({
-  selectedItems,
+  selectedLaunches,
+  unselectAllLaunches,
   changeTimeScope,
   searchLaunches,
   clearSearch,
-  allProfileNames,
+  filterLaunches,
 }) => {
   const [isNewLaunchFooterOpen, setNewLaunchFooterOpen] = useState<boolean>(false);
-  const [profiles, setProfiles] = useState<ProfileOptionType[]>([]);
 
-  useEffect(() => {
-    setProfiles(
-      allProfileNames.map((profile: string, index: number) => ({
-        value: index + 1,
-        label: profile,
-      })),
-    );
-  }, []);
+  const [message, setMessage] = useState<string>('');
+  const [messageType, setMessageType] = useState<MessageType | null>(null);
 
-  const handleChange = (_: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
+  const { filterState, setFilterState } = useLaunchesFilterStore();
+
+  const handleTimeScopeChange = (_: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
     if (typeof option?.key === 'number') {
       localStorage.setItem('timeScope', option.key.toString());
       changeTimeScope();
+
+      setFilterState('statuses', []);
+      setFilterState('retry', false);
     }
   };
 
@@ -81,6 +95,29 @@ export const LaunchesActionButtons: React.FC<ActionButtonsProps> = ({
     return Number(storedTimeScope);
   };
 
+  const filterCount = (): number => {
+    return filterState.statuses.length + (filterState.retry ? 1 : 0);
+  };
+
+  const generateRestartMessage = () => {
+    setMessageType(MessageType.RESTART);
+    if (selectedLaunches.length === 1) {
+      setMessage(`Are you sure you want to restart '${selectedLaunches[0].launchName}'?`);
+    } else {
+      setMessage('Are you sure you want to restart these launches?');
+    }
+  };
+
+  const restartLaunches = async () => {
+    await Promise.all(
+      selectedLaunches.map(async (launch) => {
+        await restartItem(launch.launchName.replace('/', '-'));
+      }),
+    );
+
+    unselectAllLaunches();
+  };
+
   return (
     <>
       <div className={styles.actionButtonContainer}>
@@ -89,20 +126,18 @@ export const LaunchesActionButtons: React.FC<ActionButtonsProps> = ({
             className={styles.actionButton}
             onClick={() => setNewLaunchFooterOpen(true)}
           >
-            <CustomIcon name="add" /> <span>Add new configuration</span>
+            <CustomIcon name="add" /> <span>Add new launch</span>
           </DefaultButton>
-          {selectedItems.length != 0 ? (
+          {selectedLaunches.length != 0 ? (
             <>
-              <DefaultButton className={styles.actionButton}>
+              <DefaultButton className={styles.actionButton} onClick={generateRestartMessage}>
                 <CustomIcon name={'restart'} /> Restart
-              </DefaultButton>
-              <DefaultButton className={styles.actionButton}>
-                <CustomIcon name={'delete'} /> Delete
               </DefaultButton>
             </>
           ) : null}
         </div>
         <div className={styles.settingContainer}>
+          <LaunchesFilterButton filterLaunches={filterLaunches} filterCount={filterCount()} />
           <SearchBox
             className="custom-search-box"
             underlined={true}
@@ -111,7 +146,7 @@ export const LaunchesActionButtons: React.FC<ActionButtonsProps> = ({
             onChange={(_, newValue) => searchLaunches(newValue)}
           />
           <Dropdown
-            options={options}
+            options={timeRangeOptions}
             styles={dropdownStyles}
             placeholder="Time Range"
             onRenderCaretDown={() => <FontIcon iconName="ChevronDown" />}
@@ -121,7 +156,7 @@ export const LaunchesActionButtons: React.FC<ActionButtonsProps> = ({
                 <div style={{ width: '100%', textAlign: 'center' }}>{props?.[0]?.text}</div>
               </div>
             )}
-            onChange={handleChange}
+            onChange={handleTimeScopeChange}
             defaultSelectedKey={timeScope()}
           />
         </div>
@@ -131,6 +166,15 @@ export const LaunchesActionButtons: React.FC<ActionButtonsProps> = ({
         isOpen={isNewLaunchFooterOpen}
         setOpen={setNewLaunchFooterOpen}
       />
+      {messageType !== null && (
+        <GeneratedMessage
+          message={message}
+          setOpen={(open) => {
+            if (!open) setMessageType(null);
+          }}
+          onSave={restartLaunches}
+        />
+      )}
     </>
   );
 };
