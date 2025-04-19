@@ -27,6 +27,9 @@ public class Profile {
 
     private String duration;
 
+    @Column(name = "has_retries")
+    private boolean hasRetries;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id")
     private Branch branch;

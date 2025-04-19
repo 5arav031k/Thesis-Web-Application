@@ -16,4 +16,5 @@ public class BranchDTO {
     private int failedTests;
     private Status status;
     private String duration;
+    private boolean hasRetries;
 }

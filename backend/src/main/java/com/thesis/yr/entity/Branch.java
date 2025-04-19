@@ -29,6 +29,9 @@ public class Branch {
 
     private String duration;
 
+    @Column(name = "has_retries")
+    private boolean hasRetries;
+
     @OneToMany(mappedBy = "branch", fetch = FetchType.LAZY)
     private List<Profile> profiles;
 }

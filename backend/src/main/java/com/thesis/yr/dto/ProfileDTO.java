@@ -16,4 +16,5 @@ public class ProfileDTO {
     private int failedTests;
     private String duration;
     private Status status;
+    private boolean hasRetries;
 }
