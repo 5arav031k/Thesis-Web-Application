@@ -1,3 +1,5 @@
+import { ItemStatus } from './Status.ts';
+
 export interface Profile {
   id: number;
   name: string;
@@ -5,16 +7,8 @@ export interface Profile {
   totalTests: number;
   failedTests: number;
   duration: string | null;
-  status: ProfileStatus;
-  retry: boolean;
-}
-
-export enum ProfileStatus {
-  PASSED = 'Passed',
-  FAILED = 'Failed',
-  IN_PROGRESS = 'In progress',
-  STOPPED = 'Stopped',
-  INTERRUPTED = 'Interrupted',
+  status: ItemStatus;
+  hasRetries: boolean;
 }
 
 export interface ProfileTableItem {
@@ -24,6 +18,6 @@ export interface ProfileTableItem {
   total: number;
   failed: number;
   duration: string | null;
-  status: ProfileStatus;
+  status: ItemStatus;
   isRetry: boolean;
 }

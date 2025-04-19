@@ -1,3 +1,5 @@
+import { ItemStatus } from './Status.ts';
+
 export interface Branch {
   id: number;
   name: string;
@@ -5,16 +7,8 @@ export interface Branch {
   totalTests: number;
   failedTests: number;
   duration: string | null;
-  status: BranchStatus;
-  retry: boolean;
-}
-
-export enum BranchStatus {
-  PASSED = 'Passed',
-  FAILED = 'Failed',
-  IN_PROGRESS = 'In progress',
-  STOPPED = 'Stopped',
-  INTERRUPTED = 'Interrupted',
+  status: ItemStatus;
+  hasRetries: boolean;
 }
 
 export interface Launch {
@@ -24,6 +18,6 @@ export interface Launch {
   total: number;
   failed: number;
   duration: string | null;
-  status: BranchStatus;
+  status: ItemStatus;
   isRetry: boolean;
 }

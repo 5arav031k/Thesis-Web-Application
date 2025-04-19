@@ -1,9 +1,10 @@
-export type SelectableItem = {
+export type SelectableLaunchItem = {
   index: number;
-  itemType: SelectableItemType;
+  launchName: string;
 };
 
-export enum SelectableItemType {
-  LAUNCH,
-  PROFILE,
-}
+export type SelectableProfileItem = {
+  index: number;
+  launchName: string;
+  profileName: string;
+};
