@@ -4,6 +4,10 @@
     flex-grow: 1;
 }
 
+.table-container .ms-DetailsHeader-cell {
+    cursor: pointer !important;
+}
+
 .table-container .ms-DetailsHeader-cell:hover {
     background-color: #f3f2f1;
 }
@@ -75,4 +79,10 @@
     justify-content: space-between;
     align-items: center;
     padding-right: 14px;
+}
+
+.icon-cell {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
 }

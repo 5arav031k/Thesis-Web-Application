@@ -9,29 +9,23 @@ import {
   TooltipHost,
 } from '@fluentui/react';
 import React, { Component } from 'react';
-import { SelectableItem, SelectableItemType } from '../../model/SelectableItem.ts';
+import { SelectableLaunchItem } from '../../model/SelectableItem.ts';
 import { TableCheckbox } from '../checkbox/TableCheckbox.tsx';
-import { BranchStatus, Launch } from '../../model/Branch.ts';
+import { Launch } from '../../model/Branch.ts';
 import { Link } from 'react-router-dom';
 import CustomIcon from '../icon/Icon.tsx';
 import { copyAndSort } from '../../utils/SortingUtils.ts';
-
-const statusClassMap: Record<BranchStatus, string> = {
-  [BranchStatus.PASSED]: 'green',
-  [BranchStatus.IN_PROGRESS]: 'yellow',
-  [BranchStatus.FAILED]: 'red',
-  [BranchStatus.STOPPED]: 'red',
-  [BranchStatus.INTERRUPTED]: 'red',
-};
+import { ItemStatus, statusClassMap } from '../../model/Status.ts';
 
 interface BranchesTableProps {
   launches: Launch[];
-  setSelectedItems: (item: SelectableItem[]) => void;
+  setSelectedLaunches: (item: SelectableLaunchItem[]) => void;
+  selectedLaunches: SelectableLaunchItem[];
   launchesRetrieved: boolean;
 }
 
 interface BranchesTableState {
-  selectedLaunches: SelectableItem[];
+  selectedLaunches: SelectableLaunchItem[];
   selection: Selection;
   columns: IColumn[];
   launches: Launch[];
@@ -53,15 +47,24 @@ class LaunchesTable extends Component<BranchesTableProps, BranchesTableState> {
         onRender: (item) => (
           <div className="table-name-cell">
             <span className="custom-cell">
-              <Link className="table-item-link" to={`${item.key}/profiles`}>
+              <Link
+                className="table-item-link"
+                to={`${item.key}/profiles`}
+                onClick={() => this.handleProfilesLinkClick(item.launch)}
+              >
                 {item.launch}
               </Link>
             </span>
-            {item.isRetry ? (
-              <TooltipHost content="Launch has retries of the test cases">
-                <CustomIcon name="retry" width={18} height={18} />
-              </TooltipHost>
-            ) : null}
+            <div className="icon-cell">
+              {item.isRetry ? (
+                <TooltipHost
+                  content="Launch has retries of the test cases"
+                  styles={{ root: { height: '18px' } }}
+                >
+                  <CustomIcon name="retry" width={18} height={18} />
+                </TooltipHost>
+              ) : null}
+            </div>
           </div>
         ),
         onRenderHeader: () => <span className="custom-header-cell">Launch</span>,
@@ -74,7 +77,7 @@ class LaunchesTable extends Component<BranchesTableProps, BranchesTableState> {
         minWidth: 200,
         isResizable: true,
         isSorted: true,
-        isSortedDescending: false,
+        isSortedDescending: true,
         data: 'string',
         onRender: (item) => <span className="custom-cell">{item.startTime}</span>,
         onRenderHeader: () => <span className="custom-header-cell">Start Time</span>,
@@ -88,7 +91,7 @@ class LaunchesTable extends Component<BranchesTableProps, BranchesTableState> {
         isResizable: true,
         data: 'string',
         onRender: (item) => (
-          <span className={`custom-cell ${statusClassMap[item.status as BranchStatus]}`}>
+          <span className={`custom-cell ${statusClassMap[item.status as ItemStatus]}`}>
             {item.status}
           </span>
         ),
@@ -142,8 +145,12 @@ class LaunchesTable extends Component<BranchesTableProps, BranchesTableState> {
   }
 
   componentDidUpdate(prevProps: BranchesTableProps, prevState: BranchesTableState) {
+    if (prevProps.selectedLaunches.length > 0 && this.props.selectedLaunches.length === 0) {
+      this.state.selection.setAllSelected(false);
+    }
+
     if (prevState.selectedLaunches !== this.state.selectedLaunches) {
-      this.props.setSelectedItems([...this.state.selectedLaunches]);
+      this.props.setSelectedLaunches([...this.state.selectedLaunches]);
     }
 
     if (this.props.launchesRetrieved && prevProps.launches !== this.props.launches) {
@@ -157,10 +164,16 @@ class LaunchesTable extends Component<BranchesTableProps, BranchesTableState> {
         (item) =>
           ({
             index: item.key,
-            itemType: SelectableItemType.LAUNCH,
-          }) as SelectableItem,
+            launchName: this.findLaunchName(Number(item.key)),
+          }) as SelectableLaunchItem,
       ),
     });
+  };
+
+  findLaunchName = (key: number): string | undefined => {
+    return new Map<number, string>(
+      this.state.launches.map((launch) => [launch.key, launch.launch]),
+    ).get(key);
   };
 
   onColumnClick = (_: React.MouseEvent<HTMLElement>, column: IColumn): void => {
@@ -188,6 +201,10 @@ class LaunchesTable extends Component<BranchesTableProps, BranchesTableState> {
       columns: newColumns,
       launches: newItems,
     });
+  };
+
+  handleProfilesLinkClick = (launchName: string) => {
+    localStorage.setItem('launchName', launchName);
   };
 
   render() {

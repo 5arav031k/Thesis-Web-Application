@@ -8,31 +8,26 @@ import {
   TooltipHost,
 } from '@fluentui/react';
 import './table.css';
-import { SelectableItem, SelectableItemType } from '../../model/SelectableItem.ts';
+import { SelectableProfileItem } from '../../model/SelectableItem.ts';
 import { TableCheckbox } from '../checkbox/TableCheckbox.tsx';
 import React, { Component } from 'react';
-import { ProfileStatus, ProfileTableItem } from '../../model/Profile.ts';
+import { ProfileTableItem } from '../../model/Profile.ts';
 import CustomIcon from '../icon/Icon.tsx';
 import { copyAndSort } from '../../utils/SortingUtils.ts';
-
-const statusClassMap: Record<ProfileStatus, string> = {
-  [ProfileStatus.PASSED]: 'green',
-  [ProfileStatus.IN_PROGRESS]: 'yellow',
-  [ProfileStatus.FAILED]: 'red',
-  [ProfileStatus.STOPPED]: 'red',
-  [ProfileStatus.INTERRUPTED]: 'red',
-};
+import { ItemStatus, statusClassMap } from '../../model/Status.ts';
 
 interface ProfilesTableProps {
-  setSelectedProfiles: (profile: SelectableItem[]) => void;
+  setSelectedProfiles: (profile: SelectableProfileItem[]) => void;
+  selectedProfiles: SelectableProfileItem[];
   launchId: string;
+  launchName: string;
   profiles: ProfileTableItem[];
   isLoading: boolean;
 }
 
 interface ProfilesTableState {
   selection: Selection;
-  selectedProfiles: SelectableItem[];
+  selectedProfiles: SelectableProfileItem[];
   columns: IColumn[];
   profiles: ProfileTableItem[];
 }
@@ -53,11 +48,16 @@ class ProfilesTable extends Component<ProfilesTableProps, ProfilesTableState> {
         onRender: (item) => (
           <div className="table-name-cell">
             <span className="custom-cell">{item.profile}</span>
-            {item.isRetry ? (
-              <TooltipHost content="Profile has retries of the test cases">
-                <CustomIcon name="retry" width={18} height={18} />
-              </TooltipHost>
-            ) : null}
+            <div className="icon-cell">
+              {item.isRetry ? (
+                <TooltipHost
+                  content="Profile has retries of the test cases"
+                  styles={{ root: { height: '18px' } }}
+                >
+                  <CustomIcon name="retry" width={18} height={18} />
+                </TooltipHost>
+              ) : null}
+            </div>
           </div>
         ),
         onRenderHeader: () => <span className="custom-header-cell">Profile</span>,
@@ -70,7 +70,7 @@ class ProfilesTable extends Component<ProfilesTableProps, ProfilesTableState> {
         minWidth: 200,
         isResizable: true,
         isSorted: true,
-        isSortedDescending: false,
+        isSortedDescending: true,
         data: 'string',
         onRender: (item) => <span className="custom-cell">{item.startTime}</span>,
         onRenderHeader: () => <span className="custom-header-cell">Start Time</span>,
@@ -84,7 +84,7 @@ class ProfilesTable extends Component<ProfilesTableProps, ProfilesTableState> {
         isResizable: true,
         data: 'string',
         onRender: (item) => (
-          <span className={`custom-cell ${statusClassMap[item.status as ProfileStatus]}`}>
+          <span className={`custom-cell ${statusClassMap[item.status as ItemStatus]}`}>
             {item.status}
           </span>
         ),
@@ -138,6 +138,10 @@ class ProfilesTable extends Component<ProfilesTableProps, ProfilesTableState> {
   }
 
   componentDidUpdate(prevProps: ProfilesTableProps, prevState: ProfilesTableState) {
+    if (prevProps.selectedProfiles.length > 0 && this.props.selectedProfiles.length === 0) {
+      this.state.selection.setAllSelected(false);
+    }
+
     if (prevState.selectedProfiles !== this.state.selectedProfiles) {
       this.props.setSelectedProfiles([...this.state.selectedProfiles]);
     }
@@ -153,10 +157,17 @@ class ProfilesTable extends Component<ProfilesTableProps, ProfilesTableState> {
         (item) =>
           ({
             index: item.key,
-            itemType: SelectableItemType.PROFILE,
-          }) as SelectableItem,
+            launchName: this.props.launchName,
+            profileName: this.findProfileName(Number(item.key)),
+          }) as SelectableProfileItem,
       ),
     });
+  };
+
+  findProfileName = (key: number): string | undefined => {
+    return new Map<number, string>(
+      this.state.profiles.map((profile) => [profile.key, profile.profile]),
+    ).get(key);
   };
 
   onColumnClick = (_: React.MouseEvent<HTMLElement>, column: IColumn): void => {
