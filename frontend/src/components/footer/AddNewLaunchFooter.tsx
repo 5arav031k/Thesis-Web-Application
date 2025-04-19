@@ -8,7 +8,9 @@ import { useCodelineParams } from '../../utils/useCodelineParamsUtils.ts';
 import { collectCodelineParamsToXML } from '../../utils/CodelineToXMLUtils.ts';
 import { DefaultButton, Label, PrimaryButton, TextField } from '@fluentui/react';
 import { ProfileOptionType } from '../../model/ProfileOptionType.ts';
-import { GeneratedMessage } from '../message/GeneratedMessage.tsx';
+import { GeneratedXMLMessage } from '../message/GeneratedXMLMessage.tsx';
+import { Toast } from '../toast/Toast.tsx';
+import { createGitLabIssue } from '../../utils/GitLabIssueUtils.ts';
 
 interface AddNewLaunchFooterProps {
   profiles: ProfileOptionType[];
@@ -39,6 +41,8 @@ export const AddNewLaunchFooter: React.FC<AddNewLaunchFooterProps> = ({
   const [resultXML, setResultXML] = useState<string>('');
   const [isResultOpened, setResultOpened] = useState<boolean>(false);
 
+  const [toastMessage, setToastMessage] = useState('');
+
   const handleClose = () => {
     resetToDefaults();
     setIsUserEdited(false);
@@ -58,8 +62,15 @@ export const AddNewLaunchFooter: React.FC<AddNewLaunchFooterProps> = ({
     );
   };
 
-  const confirmXML = (resultXML: string) => {
-    console.log(resultXML);
+  const handleCreateIssue = () => {
+    const updatedProfiles = selectedItems.map((item) => ({ name: item.label }));
+    const xml = collectCodelineParamsToXML({
+      ...params,
+      profiles: updatedProfiles,
+    });
+
+    createGitLabIssue('Add new launch in Jenkins', xml);
+    taskCreated();
     handleClose();
   };
 
@@ -74,11 +85,19 @@ export const AddNewLaunchFooter: React.FC<AddNewLaunchFooterProps> = ({
     }
   }, [params.codelineName, isUserEdited]);
 
+  const taskCreated = () => {
+    setToastMessage('Task has been created and configuration will be added soon!');
+  };
+
+  const closeToastMessage = () => {
+    setToastMessage('');
+  };
+
   return (
     <>
       <div className={`${styles.panelFooter} ${isOpen ? styles.opened : styles.closed}`}>
         <div className={styles.panelContent}>
-          <div className={styles.panelTitle}>Add new configuration</div>
+          <div className={styles.panelTitle}>Add new launch</div>
           <div className={styles.swapContent}>
             <TextField
               label="Codeline name"
@@ -128,10 +147,7 @@ export const AddNewLaunchFooter: React.FC<AddNewLaunchFooterProps> = ({
               <div className={styles.buttons}>
                 <PrimaryButton
                   className={`${styles.button} ${styles.saveButton}`}
-                  onClick={() => {
-                    handleSave();
-                    handleClose();
-                  }}
+                  onClick={handleCreateIssue}
                 >
                   Add
                 </PrimaryButton>
@@ -158,12 +174,13 @@ export const AddNewLaunchFooter: React.FC<AddNewLaunchFooterProps> = ({
         </div>
       </div>
       {isResultOpened ? (
-        <GeneratedMessage
+        <GeneratedXMLMessage
           message={resultXML}
           setOpen={setResultOpened}
-          confirmMessage={confirmXML}
+          onSave={handleCreateIssue}
         />
       ) : null}
+      {toastMessage && <Toast message={toastMessage} onClose={closeToastMessage} />}
     </>
   );
 };
