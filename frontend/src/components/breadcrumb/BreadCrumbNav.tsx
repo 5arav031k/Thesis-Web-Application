@@ -26,8 +26,13 @@ const BreadcrumbNav: React.FC = () => {
 
     const capitalizedSegment = segment.charAt(0).toUpperCase() + segment.slice(1);
 
+    let text = decodeURIComponent(capitalizedSegment);
+    if (text === 'Profiles') {
+      text = localStorage.getItem('launchName') || 'Profiles';
+    }
+
     return {
-      text: decodeURIComponent(capitalizedSegment),
+      text: text,
       key: path,
       onClick:
         index === pathSegments.length - 1
