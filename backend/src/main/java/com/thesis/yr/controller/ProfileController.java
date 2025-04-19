@@ -17,11 +17,6 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
-    @GetMapping("/names")
-    public List<String> getAllProfileNames() {
-        return profileService.getAllProfileNames();
-    }
-
     @GetMapping("/branch")
     public List<ProfileDTO> getProfilesByBranchId(@RequestParam(value = "id") int branchId) {
         return profileService.getAllProfilesByBranchId(branchId);
