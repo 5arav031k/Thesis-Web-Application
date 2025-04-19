@@ -1,4 +1,5 @@
-import { Branch, BranchStatus, Launch } from '../model/Branch.ts';
+import { Branch, Launch } from '../model/Branch.ts';
+import { ItemStatus } from '../model/Status.ts';
 
 export const getAllLaunches = async (timeScope: number): Promise<Branch[]> => {
   try {
@@ -26,7 +27,35 @@ export const convertToLaunches = (data: Branch[]): Launch[] => {
     total: branch.totalTests,
     failed: branch.failedTests,
     duration: branch.duration,
-    status: BranchStatus[branch.status as unknown as keyof typeof BranchStatus],
-    isRetry: branch.retry,
+    status: getBranchStatus(branch),
+    isRetry: branch.hasRetries,
   }));
+};
+
+const getBranchStatus = (branch: Branch): ItemStatus => {
+  let status: ItemStatus = ItemStatus[branch.status as unknown as keyof typeof ItemStatus];
+
+  if (status === ItemStatus.IN_PROGRESS) {
+    return ItemStatus.IN_PROGRESS;
+  }
+  if (branch.failedTests > 0) {
+    return ItemStatus.FAILED;
+  }
+
+  return status;
+};
+
+export const restartItem = async (item: string) => {
+  try {
+    const response = await fetch(`http://localhost:8080/api/jenkins/job/${item}/build`, {
+      method: 'POST',
+    });
+
+    if (!response.ok) {
+      console.error(`Failed to trigger Jenkins job: ${response.status} - ${response.statusText}`);
+      return;
+    }
+  } catch (error) {
+    console.error('Error triggering Jenkins job:', error);
+  }
 };

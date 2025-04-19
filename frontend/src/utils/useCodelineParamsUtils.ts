@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {CodelineParameters, ProfileName} from '../model/CodelineParameters.ts';
+import { CodelineParameters, ProfileName } from '../model/CodelineParameters.ts';
 import { BRANCH_DEFAULTS } from '../constants/Constants.ts';
 
 export const useCodelineParams = () => {

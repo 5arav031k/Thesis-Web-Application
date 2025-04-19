@@ -39,11 +39,11 @@ export const copyAndSort = (
       const sortValueA = convertDurationToMinutes(valueA);
       const sortValueB = convertDurationToMinutes(valueB);
 
-      return isSortedDescending ? sortValueA - sortValueB : sortValueB - sortValueA;
+      return isSortedDescending ? sortValueB - sortValueA : sortValueA - sortValueB;
     }
 
     if (typeof valueA === 'number' && typeof valueB === 'number') {
-      return isSortedDescending ? valueA - valueB : valueB - valueA;
+      return isSortedDescending ? valueB - valueA : valueA - valueB;
     }
 
     if (
@@ -53,7 +53,7 @@ export const copyAndSort = (
       if (valueA === null) return 1;
       if (valueB === null) return -1;
 
-      return isSortedDescending ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
+      return isSortedDescending ? valueB.localeCompare(valueA) : valueA.localeCompare(valueB);
     }
 
     return 0;
