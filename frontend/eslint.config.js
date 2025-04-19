@@ -6,6 +6,7 @@ import eslintPluginPrettier from 'eslint-plugin-prettier';
 import tsParser from '@typescript-eslint/parser';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import globals from "globals";
+import eslintUnusedImports from "eslint-plugin-unused-imports"
 
 export default [
     {
@@ -35,6 +36,7 @@ export default [
             import: eslintPluginImport,
             'jsx-a11y': eslintPluginJsxA11y,
             prettier: eslintPluginPrettier,
+            'unused-imports': eslintUnusedImports,
         },
         rules: {
             'no-undef': 'warn',
@@ -50,6 +52,8 @@ export default [
             'react/prop-types': 'off',
             'no-else-return': 'off',
             'no-nested-ternary': 'off',
+            'unused-imports/no-unused-imports': 'warn',
+            'unused-imports/no-unused-vars': 'warn',
         },
     },
 ];
