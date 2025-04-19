@@ -1,17 +1,45 @@
 import { DefaultButton, PrimaryButton } from '@fluentui/react';
-import React from 'react';
-import styles from './generatedMessage.module.css';
+import React, { useEffect, useRef } from 'react';
+import styles from './generatedXMLMessage.module.css';
+import * as monaco from 'monaco-editor';
 
 interface GeneratedMessageProps {
   message: string;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  onSave: () => void | Promise<void>;
+  onSave: () => void;
 }
 
-export const GeneratedMessage: React.FC<GeneratedMessageProps> = ({ message, setOpen, onSave }) => {
+export const GeneratedXMLMessage: React.FC<GeneratedMessageProps> = ({
+  message,
+  setOpen,
+  onSave,
+}) => {
+  const editorRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (editorRef.current) {
+      const editor = monaco.editor.create(editorRef.current, {
+        value: message,
+        language: 'xml',
+        theme: 'vs',
+        automaticLayout: true,
+        readOnly: true,
+        minimap: {
+          enabled: false,
+        },
+        lineNumbers: 'on',
+        scrollBeyondLastLine: false,
+      });
+
+      return () => {
+        editor.dispose();
+      };
+    }
+  }, [message]);
+
   const handleSave = () => {
-    onSave();
     handleClose();
+    onSave();
   };
 
   const handleClose = () => {
@@ -22,8 +50,9 @@ export const GeneratedMessage: React.FC<GeneratedMessageProps> = ({ message, set
     <>
       <div className={styles.messageBox}>
         <div className={styles.messageContainer}>
-          <div className={styles.messageHeader}>
-            <span className={styles.message}>{message}</span>
+          <div className={styles.messageHeader}>Generated XML</div>
+          <div className={styles.dialog}>
+            <div ref={editorRef} className={styles.message} />
           </div>
           <div className={styles.actionButtons}>
             <div className={styles.buttonContainer}>
@@ -31,13 +60,13 @@ export const GeneratedMessage: React.FC<GeneratedMessageProps> = ({ message, set
                 className={`${styles.button} ${styles.saveButton}`}
                 onClick={handleSave}
               >
-                Yes
+                Add
               </PrimaryButton>
               <DefaultButton
                 className={`${styles.button} ${styles.cancelButton}`}
                 onClick={handleClose}
               >
-                No
+                Cancel
               </DefaultButton>
             </div>
           </div>

@@ -6,9 +6,10 @@
     background-color: white;
     border-radius: 2px;
     box-shadow:
-            0 4.8px 14.4px rgba(0, 0, 0, 0.18),
-            0 25.6px 57.6px rgba(0, 0, 0, 0.22);
+        0 4.8px 14.4px rgba(0, 0, 0, 0.18),
+        0 25.6px 57.6px rgba(0, 0, 0, 0.22);
     z-index: 1001;
+    width: 600px;
 }
 
 .bluredBackground {
@@ -30,22 +31,19 @@
 .messageHeader {
     padding: 18px 24px;
     font-family: var(--standart-font-family);
-    font-size: 16px;
+    font-size: 20px;
     font-weight: var(--semibold-font-weight);
-    line-height: 22px;
+    line-height: 28px;
     color: #201F1E;
     text-align: left;
 }
 
 .dialog {
-    display: flex;
-    flex-direction: column;
-    padding: 0 24px;
-    gap: 10px;
-    font-family: var(--standart-font-family);
-    font-size: var(--normal-font-size);
-    font-weight: var(--normal-font-weight);
-    line-height: 20px;
+    padding-right: 12px;
+}
+
+.message {
+    height: 205px;
 }
 
 .actionButtons {

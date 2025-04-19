@@ -10,7 +10,7 @@ export const TableCheckbox = ({ ...props }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <input type="checkbox" {...props} />
+      <input type="checkbox" {...props} readOnly={true} />
       <svg width="19" height="18">
         <use
           href={
