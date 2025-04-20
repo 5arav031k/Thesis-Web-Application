@@ -8,6 +8,7 @@ import { ProfilesFilterState, useProfilesFilterStore } from '../../store/profile
 import { useState } from 'react';
 import { GeneratedMessage } from '../message/GeneratedMessage.tsx';
 import { restartItem } from '../../utils/LaunchesUtils.ts';
+import { Toast } from '../toast/Toast.tsx';
 
 interface ActionButtonsProps {
   selectedProfiles: SelectableProfileItem[];
@@ -33,6 +34,8 @@ export const ProfilesActionButtons: React.FC<ActionButtonsProps> = ({
   const [message, setMessage] = useState<string>('');
   const [messageType, setMessageType] = useState<MessageType | null>(null);
 
+  const [toastMessage, setToastMessage] = useState('');
+
   const filterCount = (): number => {
     return filterState.statuses.length + (filterState.retry ? 1 : 0);
   };
@@ -49,11 +52,16 @@ export const ProfilesActionButtons: React.FC<ActionButtonsProps> = ({
   const restartProfiles = async () => {
     await Promise.all(
       selectedProfiles.map(async (item) => {
-        await restartItem(item.launchName.replace('/', '-'));
+        await restartItem(item.launchName.replace('/', '-') + '-' + item.profileName);
       }),
     );
 
+    setToastMessage('Selected profiles were restarted.');
     unselectAllProfiles();
+  };
+
+  const closeToastMessage = () => {
+    setToastMessage('');
   };
 
   return (
@@ -88,6 +96,7 @@ export const ProfilesActionButtons: React.FC<ActionButtonsProps> = ({
           onSave={restartProfiles}
         />
       )}
+      {toastMessage && <Toast message={toastMessage} onClose={closeToastMessage} />}
     </>
   );
 };

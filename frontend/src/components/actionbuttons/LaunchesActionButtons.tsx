@@ -19,6 +19,7 @@ import { LaunchesFilterButton } from './LaunchesFilterButton.tsx';
 import { LaunchesFilterState, useLaunchesFilterStore } from '../../store/launchesFilterStore.ts';
 import { GeneratedMessage } from '../message/GeneratedMessage.tsx';
 import { restartItem } from '../../utils/LaunchesUtils.ts';
+import { Toast } from '../toast/Toast.tsx';
 
 const profiles: ProfileOptionType[] = jsonProfiles.map((profile: string, index: number) => ({
   value: index + 1,
@@ -76,6 +77,8 @@ export const LaunchesActionButtons: React.FC<ActionButtonsProps> = ({
 
   const { filterState, setFilterState } = useLaunchesFilterStore();
 
+  const [toastMessage, setToastMessage] = useState('');
+
   const handleTimeScopeChange = (_: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
     if (typeof option?.key === 'number') {
       localStorage.setItem('timeScope', option.key.toString());
@@ -115,7 +118,12 @@ export const LaunchesActionButtons: React.FC<ActionButtonsProps> = ({
       }),
     );
 
+    setToastMessage('Selected launches were restarted.');
     unselectAllLaunches();
+  };
+
+  const closeToastMessage = () => {
+    setToastMessage('');
   };
 
   return (
@@ -175,6 +183,7 @@ export const LaunchesActionButtons: React.FC<ActionButtonsProps> = ({
           onSave={restartLaunches}
         />
       )}
+      {toastMessage && <Toast message={toastMessage} onClose={closeToastMessage} />}
     </>
   );
 };
