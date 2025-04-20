@@ -106,7 +106,7 @@ export const LaunchesFilterButton: React.FC<FilterButtonProps> = ({
               Other
             </Text>
             <Checkbox
-              label="Profiles with retries"
+              label="Launches with retries"
               className="custom-checkbox"
               checked={filterState.retry}
               onChange={(_, isChecked) => handleRetryChange(!!isChecked)}
