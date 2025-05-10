@@ -22,5 +22,4 @@ public class BranchService {
                 .sorted(Comparator.comparing(BranchDTO::getStartTime).reversed())
                 .toList();
     }
-
 }
